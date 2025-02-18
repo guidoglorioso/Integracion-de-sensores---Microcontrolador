@@ -1,4 +1,4 @@
-#include "ServoMotor.h"
+#include "Drivers/driver_servomotor.h"
 
 
 #define TIME_ACT 100 // Tiempo de actualizacion mS
@@ -6,7 +6,7 @@
 
 // Constructor
 ServoMotor::ServoMotor(int pin) : currentAngle(0) {
-    servo.attach(pin);
+    servo.attach(pin,600,2400,0);
     servo.write(currentAngle);
     _angleSweep_end = 180;
     _angleSweep_start = 0;
@@ -16,9 +16,9 @@ ServoMotor::ServoMotor(int pin) : currentAngle(0) {
 
 // Método para establecer el ángulo del servomotor
 void ServoMotor::setAngle(int angle) {
-    if (angle >= 0 && angle <= 180) {
+    //if (angle >= 0 && angle <= 180) {
         currentAngle = angle;
-    }
+    //}
 }
 
 

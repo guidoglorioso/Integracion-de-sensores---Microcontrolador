@@ -1,9 +1,11 @@
 {
     "files.associations": {
+        "*.md": "markdown",
         "chrono": "cpp",
         "limits": "cpp",
         "functional": "cpp",
         "type_traits": "cpp",
-        "iterator": "cpp"
+        "iterator": "cpp",
+        "tuple": "cpp"
     }
 }

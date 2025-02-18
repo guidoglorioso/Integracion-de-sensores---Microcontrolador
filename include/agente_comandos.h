@@ -1,8 +1,9 @@
-#ifndef COMUNICACION_H
-#define COMUNICACION_H
+#ifndef AGENTE_COMANDOS_H
+#define AGENTE_COMANDOS_H
 
-#include <Arduino.h>
 
+#include "UserDefines/comandos.h"
+#include "Drivers/driver_comunicacion.h"
 
 /*
 Para agregar un nuevo comando se deben seguir los siguiente pasos:
@@ -38,45 +39,13 @@ Comandos sin argumento ${comando}#
 
 */
 
-// Comandos definidos
-enum Comando{
-    // Comandos para recibir
-    RX_MOV_SERVO,                       // Permite mover el servo a una posicion determinada trabajando con angulo
-    RX_RECORRIDO_SERVO,                 // Permite activar/desactivar la secuencia de movimiento fija del servomotor (barrido de 0 a 180 grados)
-    RX_MS_SENSOR_ULTRA_SONIDO,          // Permite activar/desactivar mediciones constantemente del sensor de ultra sonido
-    RX_MS_SENSOR_ULTRA_SONIDO_ONETIME,  // Permite pedir la ultima medicion hecha.
-    RX_MS_SENSOR_OPTICO,                // Permite activar/desactivar mediciones constantemente del sensor optico
-    RX_MS_SENSOR_OPTICO_ONETIME,        // Permite pedir la ultima medicion hecha.
-    RX_MS_SENSOR_ACELEROMETRO,          // Permite activar/desactivar mediciones constantemente del sensor acelerometro
-    RX_MS_SENSOR_GIROSCOPO,             // Permite activar/desactivar mediciones constantemente del sensor giroscopo
-    
-    //Comandos para enviar
-    TX_ACELEROMETRO_X,      // Enviar aceleracion eje X.
-    TX_ACELEROMETRO_Y,      // Enviar aceleracion eje Y.
-    TX_ACELEROMETRO_Z,      // Enviar aceleracion eje Z.
-    TX_ULTRA_SONIDO,        // Enviar medicion ultrasonido.
-    TX_OPTICO,              // Envia medicion sensor optico.
-    TX_GIROSCOPO_X,         // Enviar aceleracion angular eje X.
-    TX_GIROSCOPO_Y,         // Enviar aceleracion angular eje Y.
-    TX_GIROSCOPO_Z,         // Enviar aceleracion angular eje Z.
-};
-
-//Estructura de cada comando
-struct Comandos_t {
-    const Comando cmd;      // Nombre del comando
-    const char* trama;      // Trama asociada que se recibe
-    void (*funcion)(int*);  // Funcion que se invoca al enviar o recibir el comando
-    bool transmitir;        // Define si se debe enviar periodicamente un comando. Unicamente se usa para comandos Tx
-};
 
 
-class Comunicacion {
+
+class AgenteComandos {
 public:
     // Constructor
-    Comunicacion(long int baudRate);
-
-    // Método para establecer la comunicación serie
-    void iniciarComunicacion(long int baudRate,SerialConfig config_extra);
+    AgenteComandos(void);
 
     // Método para enviar tramas por puerto serie
     char enviarComando(Comando comando);
@@ -105,6 +74,7 @@ private:
     unsigned long lastUpdateTime; 
     static Comandos_t lista_de_comandos_RX[];
     static Comandos_t lista_de_comandos_TX[];
+    Comunicacion com;
 };
 
-#endif // COMUNICACION_H
+#endif // AGENTE_COMANDOS
