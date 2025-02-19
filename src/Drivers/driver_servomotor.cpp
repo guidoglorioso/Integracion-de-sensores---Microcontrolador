@@ -1,7 +1,7 @@
 #include "Drivers/driver_servomotor.h"
 
 
-#define TIME_ACT 100 // Tiempo de actualizacion mS
+#define TIME_ACT 80 // Tiempo de actualizacion mS
 
 
 // Constructor
@@ -58,16 +58,16 @@ void ServoMotor::update() {
     if (millis() - lastUpdateTime >= TIME_ACT) { 
         lastUpdateTime = millis();
 
-        if (sweeping ){
-            currentAngle += sweepDirection;
-            if (currentAngle >= _angleSweep_end) {
-                currentAngle = _angleSweep_end;
-                sweepDirection = -1; // Cambiar dirección para barrer hacia atrás
-            } else if (currentAngle <= _angleSweep_start) {
-                currentAngle = _angleSweep_start;
-                sweepDirection = 1; // Cambiar dirección para barrer hacia adelante
-            }
-        }
+        // if (sweeping ){
+        //     currentAngle += sweepDirection;
+        //     if (currentAngle >= _angleSweep_end) {
+        //         currentAngle = _angleSweep_end;
+        //         sweepDirection = -1; // Cambiar dirección para barrer hacia atrás
+        //     } else if (currentAngle <= _angleSweep_start) {
+        //         currentAngle = _angleSweep_start;
+        //         sweepDirection = 1; // Cambiar dirección para barrer hacia adelante
+        //     }
+        // }
         
         servo.write(currentAngle); // Escribo en el servo el angulo actual.
     }

@@ -1,6 +1,6 @@
 #include "agente_comandos.h"
 
-#define TIME_ACT 50 //ms Tiempo entre cada lectura del puerto serie
+#define TIME_ACT 2 //ms Tiempo entre cada lectura del puerto serie
 
 
 /*

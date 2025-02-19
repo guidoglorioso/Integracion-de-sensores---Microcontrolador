@@ -1,7 +1,7 @@
 #include "Drivers/driver_sensor_optico.h"
 #include <Arduino.h>
 
-#define TIME_ACT 60 //Tiempo de actualizacion en mS
+#define TIME_ACT 40 //Tiempo de actualizacion en mS
 #define NUMBER_MEASURES 10
 
 SensorOptico::SensorOptico(int sensorPin) {
@@ -31,7 +31,7 @@ void SensorOptico::getDistance_mm(int* medicion_return) {
 //TODO: hacer que no se este actualizando todo el tiempo el sensor si no se usa.
 void SensorOptico::update() {
     unsigned long currentTime ;
-    //
+    
     static int adc_value[NUMBER_MEASURES];
     static int num_med =0;
     currentTime = millis();

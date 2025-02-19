@@ -104,10 +104,23 @@ void asignar_rutinas_atencion(){
 }
 
 void update(){
+
+    //Medir tiempos en uS
+   
+    //unsigned long lastUpdateTime_1 = micros();
+    //Serial.println((double)(micros() - lastUpdateTime_1),2);
+
     //Update de objetos
-    servo.update(); // Seteado en 100ms
-    agente.update();   // Seteado en 50ms
-    opt.update();   // Seteado en 40ms
-    us.update();    // Seteado en 70ms
+    
+    servo.update(); // Seteado en 80ms // 17ms en ejecutarse
+    opt.update();   // Seteado en 40ms //0.2ms en ejecutarse
+    us.update();    // Seteado en 80ms // 3ms en ejecutarse
+  
     //   pos.update();
+    
+    // Actualizacion Agente comandos
+    
+    agente.update();   // Seteado en 1ms // 400us cuando recibe comando
+    
+   
 }
