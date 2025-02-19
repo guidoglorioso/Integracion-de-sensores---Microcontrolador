@@ -28,8 +28,8 @@ int ServoMotor::getAngle() const {
 }
 
 // Método para iniciar el barrido del servomotor
-void ServoMotor::SetSweep(bool estado) {
-    sweeping = estado;
+void ServoMotor::SetSweep(bool _regular_tx) {
+    sweeping = _regular_tx;
     sweepDirection = 1; // Inicialmente barrer de 0 a 180
 }
 

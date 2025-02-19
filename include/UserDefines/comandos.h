@@ -18,15 +18,14 @@ Para agregar un nuevo comando:
 // Comandos definidos
 enum Comando{
     // Comandos para recibir
-    RX_MOV_SERVO,                       // (ok)Permite mover el servo a una posicion determinada trabajando con angulo
-    RX_RECORRIDO_SERVO,                 // Permite activar/desactivar la secuencia de movimiento fija del servomotor (barrido de 0 a 180 grados)
-    RX_MS_SENSOR_ULTRA_SONIDO,          // (ok)Permite activar/desactivar mediciones constantemente del sensor de ultra sonido
-    RX_MS_SENSOR_ULTRA_SONIDO_ONETIME,  // (ok)Permite pedir la ultima medicion hecha.
-    RX_MS_SENSOR_OPTICO,                // (ok)Permite activar/desactivar mediciones constantemente del sensor optico
-    RX_MS_SENSOR_OPTICO_ONETIME,        // (ok)Permite pedir la ultima medicion hecha.
-    RX_MS_SENSOR_ACELEROMETRO,          // Permite activar/desactivar mediciones constantemente del sensor acelerometro
-    RX_MS_SENSOR_GIROSCOPO,             // Permite activar/desactivar mediciones constantemente del sensor giroscopo
-    RX_MS_ANGULO,                       // Permite pedir la ultima medicion
+    RX_MOV_SERVO,                           // (ok)Permite mover el servo a una posicion determinada trabajando con angulo
+    RX_MS_SENSOR_ULTRA_SONIDO_REGULAR,      // Permite activar (ARGUMENTO > 0) o desactivar (ARGUMENTO = 0) las mediciones constantemente del sensor de ultra sonido
+    RX_MS_SENSOR_ULTRA_SONIDO_ONETIME,      // (ok)Permite pedir la ultima medicion hecha.
+    RX_MS_SENSOR_OPTICO_REGULAR,            // Permite activar (ARGUMENTO > 0) o desactivar (ARGUMENTO = 0) las mediciones constantemente del sensor optico
+    RX_MS_SENSOR_OPTICO_ONETIME,            // (ok)Permite pedir la ultima medicion hecha.
+    RX_MS_SENSOR_ACELEROMETRO,              // Permite activar/desactivar mediciones constantemente del sensor acelerometro
+    RX_MS_SENSOR_GIROSCOPO,                 // Permite activar/desactivar mediciones constantemente del sensor giroscopo
+    RX_MS_ANGULO,                           // Permite pedir la ultima medicion
 
     //Comandos para enviar
     TX_ACELEROMETRO_X,      // Enviar aceleracion eje X.
@@ -45,7 +44,6 @@ struct Comandos_t {
     const Comando cmd;      // Nombre del comando
     const char* trama;      // Trama asociada que se recibe
     void (*funcion)(int*);  // Funcion que se invoca al enviar o recibir el comando
-    bool transmitir;        // Define si se debe enviar periodicamente un comando. Unicamente se usa para comandos Tx
 };
 
 /*
@@ -53,27 +51,26 @@ struct Comandos_t {
 */
 
 #define DEFINE_COMANDO_RX { \
-    {RX_MS_SENSOR_ULTRA_SONIDO_ONETIME, "SENUS1", nullptr, false}, \
-    {RX_MS_SENSOR_OPTICO_ONETIME, "SENOP1", nullptr, false}, \
-    {RX_MOV_SERVO, "MOV1", nullptr, false}, \
-    {RX_RECORRIDO_SERVO, "MOVR", nullptr, false}, \
-    {RX_MS_SENSOR_ULTRA_SONIDO, "SENUS", nullptr, false}, \
-    {RX_MS_SENSOR_OPTICO, "SENOP", nullptr, false}, \
-    {RX_MS_SENSOR_ACELEROMETRO, "SENAC", nullptr, false}, \
-    {RX_MS_SENSOR_GIROSCOPO, "SENGI", nullptr, false}, \
-    {RX_MS_ANGULO, "ANG", nullptr, false} \
+    {RX_MS_SENSOR_ULTRA_SONIDO_ONETIME, "SENUS1", nullptr}, \
+    {RX_MS_SENSOR_OPTICO_ONETIME, "SENOP1", nullptr}, \
+    {RX_MOV_SERVO, "MOV1", nullptr}, \
+    {RX_MS_SENSOR_ULTRA_SONIDO_REGULAR, "SENUS", nullptr}, \
+    {RX_MS_SENSOR_OPTICO_REGULAR, "SENOP", nullptr}, \
+    {RX_MS_SENSOR_ACELEROMETRO, "SENAC", nullptr}, \
+    {RX_MS_SENSOR_GIROSCOPO, "SENGI", nullptr}, \
+    {RX_MS_ANGULO, "ANG", nullptr} \
 }
 
 #define DEFINE_COMANDO_TX { \
-    {TX_ACELEROMETRO_X, "SENACX", nullptr, false}, \
-    {TX_ACELEROMETRO_Y, "SENACY", nullptr, false}, \
-    {TX_ACELEROMETRO_Z, "SENACZ", nullptr, false}, \
-    {TX_ULTRA_SONIDO, "SENUSD", nullptr, false}, \
-    {TX_OPTICO, "SENOPD", nullptr, false}, \
-    {TX_GIROSCOPO_X, "SENGIX", nullptr, false}, \
-    {TX_GIROSCOPO_Y, "SENGIY", nullptr, false}, \
-    {TX_GIROSCOPO_Z, "SENGIZ", nullptr, false}, \
-    {TX_ANGULO, "SENANG", nullptr, false} \
+    {TX_ACELEROMETRO_X, "SENACX", nullptr}, \
+    {TX_ACELEROMETRO_Y, "SENACY", nullptr}, \
+    {TX_ACELEROMETRO_Z, "SENACZ", nullptr}, \
+    {TX_ULTRA_SONIDO, "SENUSD", nullptr }, \
+    {TX_OPTICO, "SENOPD", nullptr}, \
+    {TX_GIROSCOPO_X, "SENGIX", nullptr}, \
+    {TX_GIROSCOPO_Y, "SENGIY", nullptr}, \
+    {TX_GIROSCOPO_Z, "SENGIZ", nullptr}, \
+    {TX_ANGULO, "SENANG", nullptr} \
 }
 
 #endif // COMANDOS_DEFINES_H

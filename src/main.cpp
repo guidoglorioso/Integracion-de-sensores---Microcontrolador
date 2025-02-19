@@ -45,10 +45,5 @@ void loop() {
 
     update();
 
-    // TODO: Cambiar como se configura esto
-    //Setear si se transmite en forma continua o no un mensaje
-    AgenteComandos::SetTransmitir(TX_ULTRA_SONIDO,us.GetState());
-    AgenteComandos::SetTransmitir(TX_OPTICO,opt.GetState());
-
 }
 

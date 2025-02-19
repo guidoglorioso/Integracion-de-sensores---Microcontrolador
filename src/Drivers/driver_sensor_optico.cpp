@@ -8,7 +8,10 @@ SensorOptico::SensorOptico(int sensorPin) {
   pin = sensorPin;
   lastMeasurementTime = 0;
   pinMode(pin, INPUT);
-  estado = 0;
+  
+  _ptrRegularTransmision = nullptr;
+  _regular_tx = 0;
+  _cant_update_regular_tx = 1;
 }
 
 //Devuelve la distancia en CM
@@ -49,7 +52,23 @@ void SensorOptico::update() {
         float distance = 31.0 * ((3000 / (value + 1) - 0.8)); // Calcula la distancia en mm
 
         medicion = distance;
+        _regularTxCheck();
     }
     
 }
 
+void SensorOptico::_regularTxCheck(){
+  static int _actualizaciones = 0;
+  if(_regular_tx){
+      if(_actualizaciones >= _cant_update_regular_tx){
+          _actualizaciones = 0;
+          if (_ptrRegularTransmision != nullptr)
+          {
+              _ptrRegularTransmision(nullptr);
+          }            
+      }
+      else{
+          _actualizaciones++;
+      }
+  }
+}

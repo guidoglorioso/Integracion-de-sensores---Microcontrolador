@@ -17,7 +17,7 @@ public:
     int getAngle() const;
 
     // Metodo que setea el sweep del motor en activo o apagado. (Barre desde un angulo incial a un angulo final).
-    void SetSweep(bool estado);
+    void SetSweep(bool _regular_tx);
     
     // Metodo que define el rango de Sweep del servo
     void SetSweepInterval(int angle_i, int angle_f);

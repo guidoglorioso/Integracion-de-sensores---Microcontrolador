@@ -7,7 +7,9 @@
 SensorUltraSonido::SensorUltraSonido(int triggerPin, int echoPin)
   : ultrasonic(triggerPin, echoPin) {
   lastMeasurementTime = 0;
-  estado = 0;
+  _ptrRegularTransmision = nullptr;
+  _regular_tx = 0;
+  _cant_update_regular_tx = 1;
 }
 
 float SensorUltraSonido::getDistance_cm() {
@@ -30,5 +32,23 @@ void SensorUltraSonido::update() {
         float distance = ultrasonic.measureDistanceCM();
 
         medicion = distance;
+        _regularTxCheck();
+    }
+}
+
+
+void SensorUltraSonido::_regularTxCheck(){
+    static int _actualizaciones = 0;
+    if(_regular_tx){
+        if(_actualizaciones >= _cant_update_regular_tx){
+            _actualizaciones = 0;
+            if (_ptrRegularTransmision != nullptr)
+            {
+                _ptrRegularTransmision(nullptr);
+            }            
+        }
+        else{
+            _actualizaciones++;
+        }
     }
 }

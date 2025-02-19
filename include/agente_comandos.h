@@ -53,9 +53,6 @@ public:
     // Método para enviar por puerto serie un mensaje cualquiera
     void enviarSerie(String mensaje); 
 
-    //Metodo que fija el valor de "transmitir" en un determinado comando Tx (define si debe enviar o no por serie constantemente)
-    static void SetTransmitir(Comando comandos,bool state);
-
     // Metodo que permite asignar una funcion a un comando.
     static void asignarFuncion(const Comando cmd, void (*funcion)(int*));
     
@@ -66,9 +63,6 @@ private:
 
     // Metodo que chequea si hay comandos disponibles y ejecuta sus funciones asociadas. Debe ser actualizada constantemente.
     void recibirComandos();
-
-    //Metodo que envia todos los comandos de Tx que esten con el estado "transmitir" = 1
-    void Transmitir();
 
     // Variables privadas 
     unsigned long lastUpdateTime; 

@@ -27,7 +27,6 @@ void AgenteComandos::update(){
     if (millis() - lastUpdateTime >= TIME_ACT) { 
         lastUpdateTime = millis();
         recibirComandos();  // Chequeo si hay comandos a recibir
-        Transmitir();       // Envio los datos que esten configurados para ser enviado en forma periodica.
     }
 }
 
@@ -88,27 +87,6 @@ char AgenteComandos::enviarComando(Comando comando){
     }
     return 0;
 }
-
-
-void AgenteComandos::SetTransmitir(Comando comando,bool state){
-    for (int i = 0; i < (int) ((float)sizeof(lista_de_comandos_TX) / sizeof(lista_de_comandos_TX[0])); ++i) {
-        if ((lista_de_comandos_TX[i].cmd == comando) && (lista_de_comandos_TX[i].transmitir != state)) {
-                lista_de_comandos_TX[i].transmitir = state;
-        }
-    }
-}
-void AgenteComandos::Transmitir(){
-    int argumento=0;
-    
-    for (int i = 0; i < (int)((float)sizeof(lista_de_comandos_TX) / sizeof(lista_de_comandos_TX[0])); ++i) {
-        if (lista_de_comandos_TX[i].transmitir) { // Envio los comandos configurado para ser enviado en forma periodica
-                lista_de_comandos_TX[i].funcion(&argumento);
-                String arg_ascci = "$" + String(lista_de_comandos_TX[i].trama) + String(argumento) + "#";
-                com.enviarComandoString(arg_ascci);
-        }
-    }
-}
-
 
 
 void AgenteComandos::asignarFuncion(const Comando cmd, void (*funcion)(int*)) {

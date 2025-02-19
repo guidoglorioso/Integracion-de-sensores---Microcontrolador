@@ -29,14 +29,34 @@ void recorrido_servo_estado(int * arg){
     servo.SetSweep((bool) *arg);
 }
 
-// Rutina de atencion para comando: RX_MS_SENSOR_ULTRA_SONIDO
-void sensor_ultra_sonido_estado(int * arg){
-    us.SetState((bool) *arg);
+// Rutina de atencion para comando: RX_MS_SENSOR_ULTRA_SONIDO_REGULAR
+void sensor_ultra_sonido_regular(int * arg){
+
+    if(*arg <= 0){
+        us.SetRegularTransmition((bool) false);
+        us.SetRegularTransmitionCMD( nullptr );
+    }
+    else{
+        us.SetRegularTransmition((bool) true);
+        us.SetCantUpdateRegularTx(*arg);
+        us.SetRegularTransmitionCMD( sensor_ultra_sonido_medicion );
+    }
+
 }
 
-// Rutina de atencion para comando: RX_MS_SENSOR_OPTICO
-void sensor_optico_estado(int * arg){
-    opt.SetState((bool) *arg);
+
+// Rutina de atencion para comando: RX_MS_SENSOR_OPTICO_REGULAR
+void sensor_optico_regular(int * arg){
+    if(*arg <= 0){
+        opt.SetRegularTransmition((bool) false);
+        opt.SetRegularTransmitionCMD( nullptr );
+    }
+    else{
+        opt.SetRegularTransmition((bool) true);
+        opt.SetCantUpdateRegularTx(*arg);
+        opt.SetRegularTransmitionCMD( sensor_optico_medicion );
+    }
+
 }
 
 // Rutina de atencion para comando: TX_ULTRA_SONIDO
@@ -65,9 +85,8 @@ void sensor_optico_medicion(int * arg){
 void asignar_rutinas_atencion(){
 
     AgenteComandos::asignarFuncion(RX_MOV_SERVO,mov_servo);
-    AgenteComandos::asignarFuncion(RX_RECORRIDO_SERVO,recorrido_servo_estado);
-    AgenteComandos::asignarFuncion(RX_MS_SENSOR_ULTRA_SONIDO,sensor_ultra_sonido_estado);
-    AgenteComandos::asignarFuncion(RX_MS_SENSOR_OPTICO,sensor_optico_estado);
+    AgenteComandos::asignarFuncion(RX_MS_SENSOR_ULTRA_SONIDO_REGULAR,sensor_ultra_sonido_regular);
+    AgenteComandos::asignarFuncion(RX_MS_SENSOR_OPTICO_REGULAR,sensor_optico_regular);
     AgenteComandos::asignarFuncion(RX_MS_SENSOR_ULTRA_SONIDO_ONETIME,sensor_ultra_sonido_medicion);
     AgenteComandos::asignarFuncion(RX_MS_SENSOR_OPTICO_ONETIME,sensor_optico_medicion);
     AgenteComandos::asignarFuncion(TX_ULTRA_SONIDO,leer_sensor_ultrasonido);
