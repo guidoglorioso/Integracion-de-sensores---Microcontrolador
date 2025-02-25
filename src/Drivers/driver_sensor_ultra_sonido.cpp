@@ -2,7 +2,7 @@
 
 #include <Arduino.h>
 
-#define TIME_ACT 40//ms Tiempo entre cada medicion del sensor
+#define TIME_ACT 60//ms Tiempo entre cada medicion del sensor
 
 SensorUltraSonido::SensorUltraSonido(int triggerPin, int echoPin)
   : ultrasonic(triggerPin, echoPin) {
@@ -25,7 +25,7 @@ void SensorUltraSonido::update() {
 
 
     currentTime = millis();
-   // if (currentTime - lastMeasurementTime >= TIME_ACT) {
+    if (currentTime - lastMeasurementTime >= TIME_ACT) {
         lastMeasurementTime = currentTime;
 
         // Realiza la medición de distancia
@@ -33,7 +33,7 @@ void SensorUltraSonido::update() {
 
         medicion = distance;
         _regularTxCheck();
- //   }
+    }
 }
 
 

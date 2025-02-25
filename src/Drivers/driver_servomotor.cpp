@@ -1,7 +1,7 @@
 #include "Drivers/driver_servomotor.h"
 
 
-#define TIME_ACT 80 // Tiempo de actualizacion mS
+#define TIME_ACT 90 // Tiempo de actualizacion mS
 
 
 // Constructor

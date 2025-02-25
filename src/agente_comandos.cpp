@@ -1,6 +1,6 @@
 #include "agente_comandos.h"
 
-#define TIME_ACT 2 //ms Tiempo entre cada lectura del puerto serie
+#define TIME_ACT 1 //ms Tiempo entre cada lectura del puerto serie
 
 
 /*
@@ -24,8 +24,9 @@ AgenteComandos::AgenteComandos(void) : com(115200) {
 
 void AgenteComandos::update(){
 
-    if (millis() - lastUpdateTime >= TIME_ACT) { 
-        lastUpdateTime = millis();
+    unsigned long currentTime = millis();
+    if (currentTime - lastUpdateTime >= TIME_ACT) { 
+        lastUpdateTime = currentTime;
         recibirComandos();  // Chequeo si hay comandos a recibir
     }
 }
@@ -70,7 +71,7 @@ void AgenteComandos::recibirComandos(){
 
 char AgenteComandos::enviarComando(Comando comando){
     String mensaje;
-    int argumento=0;
+    long argumento=0;
 
     //Busco si el comando es valido
     for (int i = 0; i < (int)((float)sizeof(lista_de_comandos_TX) / sizeof(lista_de_comandos_TX[0])); ++i) {

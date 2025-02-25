@@ -1,8 +1,8 @@
 #include "Drivers/driver_sensor_optico.h"
 #include <Arduino.h>
 
-#define TIME_ACT 40 //Tiempo de actualizacion en mS
-#define NUMBER_MEASURES 10
+#define TIME_ACT 30 //Tiempo de actualizacion en mS
+#define NUMBER_MEASURES 5
 
 SensorOptico::SensorOptico(int sensorPin) {
   pin = sensorPin;
