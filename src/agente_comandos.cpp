@@ -71,7 +71,7 @@ void AgenteComandos::recibirComandos(){
 
 char AgenteComandos::enviarComando(Comando comando){
     String mensaje;
-    long argumento=0;
+    int argumento=0;
 
     //Busco si el comando es valido
     for (int i = 0; i < (int)((float)sizeof(lista_de_comandos_TX) / sizeof(lista_de_comandos_TX[0])); ++i) {
@@ -81,7 +81,7 @@ char AgenteComandos::enviarComando(Comando comando){
             lista_de_comandos_TX[i].funcion(&argumento);
             
             // Formo la trama del comando
-            String arg_ascci = "$" + String(lista_de_comandos_TX[i].trama) + String(argumento) + "#";
+            String arg_ascci = "$" + String(lista_de_comandos_TX[i].trama) + "-" + String(argumento) + "#";
             com.enviarComandoString(arg_ascci);
             return 1;
         }
