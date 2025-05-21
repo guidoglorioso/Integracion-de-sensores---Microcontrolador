@@ -23,34 +23,40 @@ extern SensorOptico opt;
 
 
 // Rutina de atencion para comando: RX_MS_ANGULO
-void servo_estado(int * arg);
+void servo_estado(int * arg, int *cant_arg);
 
 // Rutina de atencion para comando: TX_ANGULO
-void leer_angulo_servo(int * arg);
+void leer_angulo_servo(int * arg, int *cant_arg);
 
 // Rutina de atencion para comando: RX_MOV_SERVO
-void mov_servo(int * arg);
+void mov_servo(int * arg, int *cant_arg);
 
 // Rutina de atencion para comando: RX_RECORRIDO_SERVO
-void recorrido_servo_estado(int * arg);
+void recorrido_servo_estado(int * arg, int *cant_arg);
 
 // Rutina de atencion para comando: RX_MS_SENSOR_ULTRA_SONIDO
-void sensor_ultra_sonido_estado(int * arg);
+void sensor_ultra_sonido_estado(int * arg, int *cant_arg);
 
 // Rutina de atencion para comando: RX_MS_SENSOR_OPTICO
-void sensor_optico_estado(int * arg);
+void sensor_optico_estado(int * arg, int *cant_arg);
 
 // Rutina de atencion para comando: TX_ULTRA_SONIDO
-void leer_sensor_ultrasonido(int * arg);
+void leer_sensor_ultrasonido(int * arg, int *cant_arg);
 
 // Rutina de atencion para comando: TX_OPTICO
-void leer_sensor_optico(int * arg);
+void leer_sensor_optico(int * arg, int *cant_arg);
 
 // Rutina de atencion para comando: RX_MS_SENSOR_ULTRA_SONIDO_ONETIME
-void sensor_ultra_sonido_medicion(int * arg);
+void sensor_ultra_sonido_medicion(int * arg, int *cant_arg);
 
 // Rutina de atencion para comando: RX_MS_SENSOR_OPTICO_ONETIME
-void sensor_optico_medicion(int * arg);
+void sensor_optico_medicion(int * arg, int *cant_arg);
+
+// Rutina de atencion para comando: RX_TEST
+void recibir_test(int * arg, int *cant_arg);
+
+// Rutina de atencion para comando: TX_TEST
+void enviar_test(int * arg, int *cant_arg);
 
 // Funciones de inicializacion
 

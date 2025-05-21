@@ -33,14 +33,14 @@ void AgenteComandos::update(){
 
 //TODO ver tema de que es bloqueante la comunicacion hasta que recibe "#"
 // TODO implementar con maquina de estados.
+// Limito la cantidad de datos a recibir a un maximo de CANTIDAD_ARGUMENTOS_MAX valores 
 void AgenteComandos::recibirComandos(){
     String comando;
-    int argumento;
-
+    int argumento[CANTIDAD_ARGUMENTOS_MAX];
+    int cant_arg = 0;
     // Detecto si hay datos en serie (como minimo que haya 4 bytes)
     String receivedText = com.recibirComandoString();
     if (!receivedText.isEmpty()) {
-        
         // Detecto parte importantes del comando
         int guion = receivedText.indexOf("-");
         int inicio_trama = receivedText.indexOf("$");
@@ -49,39 +49,59 @@ void AgenteComandos::recibirComandos(){
         // Detecto si es un comando sin argumento
         if(guion == -1){ 
             comando = receivedText.substring(inicio_trama+1,fin_trama);
-            argumento = -1;
+            argumento[0] = -1;
         }
         else{ // Si es un comando con argumento
-            comando = receivedText.substring(inicio_trama+1,guion);
-            argumento =  receivedText.substring(guion+1,fin_trama).toInt();
-        }
 
-        //En caso de ser un comando Rx valido se llama a su funcion asociada.
-        for (int i = 0; i < (int)((float)sizeof(lista_de_comandos_RX) / sizeof(lista_de_comandos_RX[0])); ++i) {
-            
-            if (comando.equals(lista_de_comandos_RX[i].trama)) {
-            // Ejecutar la función asociada al comando
-                if(lista_de_comandos_RX[i].funcion !=nullptr)
-                    lista_de_comandos_RX[i].funcion(&argumento);
-                return;
-            }
+            comando = receivedText.substring(inicio_trama+1,guion);
+            do{
+                int siguiente_guion = receivedText.indexOf("-",guion+1);
+                if(siguiente_guion != -1){
+                    argumento[cant_arg] = receivedText.substring(guion+1,siguiente_guion).toInt();
+                }
+                else{
+                // Si no hay mas guiones, significa que es el ultimo argumento
+                // y se debe tomar el argumento hasta el final de la trama
+                    argumento[cant_arg] = receivedText.substring(guion+1,fin_trama).toInt();
+                }
+                guion = siguiente_guion;
+                cant_arg++;
+            }while(guion != -1 && cant_arg < 20);
+
+        }
+    }
+
+    //En caso de ser un comando Rx valido se llama a su funcion asociada.
+    for (int i = 0; i < (int)((float)sizeof(lista_de_comandos_RX) / sizeof(lista_de_comandos_RX[0])); ++i) {
+        
+        if (comando.equals(lista_de_comandos_RX[i].trama)) {
+        // Ejecutar la función asociada al comando
+            if(lista_de_comandos_RX[i].funcion !=nullptr)
+                lista_de_comandos_RX[i].funcion(argumento,&cant_arg);
+            return;
         }
     }
 }
 
+
 char AgenteComandos::enviarComando(Comando comando){
     String mensaje;
-    int argumento=0;
-
+    int argumento[CANTIDAD_ARGUMENTOS_MAX];
+    int cantidad_argumentos = 0;
     //Busco si el comando es valido
     for (int i = 0; i < (int)((float)sizeof(lista_de_comandos_TX) / sizeof(lista_de_comandos_TX[0])); ++i) {
         if (lista_de_comandos_TX[i].cmd == comando) {
             
             // Ejecutar la función asociada al comando
-            lista_de_comandos_TX[i].funcion(&argumento);
+            lista_de_comandos_TX[i].funcion(argumento,&cantidad_argumentos);
             
             // Formo la trama del comando
-            String arg_ascci = "$" + String(lista_de_comandos_TX[i].trama) + "-" + String(argumento) + "#";
+            
+            String argumentos = "";
+            for(int i2 =0;i2<cantidad_argumentos;i2++){
+                argumentos += "-" + String(argumento[i2]);
+            }
+            String arg_ascci = "$" + String(lista_de_comandos_TX[i].trama) + argumentos + "#";
             com.enviarComandoString(arg_ascci);
             return 1;
         }
@@ -90,7 +110,7 @@ char AgenteComandos::enviarComando(Comando comando){
 }
 
 
-void AgenteComandos::asignarFuncion(const Comando cmd, void (*funcion)(int*)) {
+void AgenteComandos::asignarFuncion(const Comando cmd, void (*funcion)(int*,int*)) {
     // Recorrer el vector de comandos
 
     for (int i = 0; i <(int)((float)sizeof(lista_de_comandos_RX) / sizeof(lista_de_comandos_RX[0])); ++i) {

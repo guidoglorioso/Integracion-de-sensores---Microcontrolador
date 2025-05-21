@@ -38,7 +38,7 @@ Comandos sin argumento ${comando}#
 
 
 */
-
+#define CANTIDAD_ARGUMENTOS_MAX 20
 
 
 
@@ -54,7 +54,7 @@ public:
     void enviarSerie(String mensaje); 
 
     // Metodo que permite asignar una funcion a un comando.
-    static void asignarFuncion(const Comando cmd, void (*funcion)(int*));
+    static void asignarFuncion(const Comando cmd, void (*funcion)(int*,int*));
     
     // Metodo para actualizar los estados de la comunicacion
     void update();

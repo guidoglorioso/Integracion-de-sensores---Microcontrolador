@@ -64,7 +64,7 @@ void SensorOptico::_regularTxCheck(){
           _actualizaciones = 0;
           if (_ptrRegularTransmision != nullptr)
           {
-              _ptrRegularTransmision(nullptr);
+              _ptrRegularTransmision(nullptr,nullptr);
           }            
       }
       else{

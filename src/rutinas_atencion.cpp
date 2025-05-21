@@ -9,28 +9,32 @@
 */
 
 
+
 // Rutina de atencion para comando: RX_MS_ANGULO
-void servo_estado(int * arg){
+void servo_estado(int * arg, int *cant_arg){
     agente.enviarComando(TX_ANGULO);
 }
 
 // Rutina de atencion para comando: TX_ANGULO
-void leer_angulo_servo(int * arg){
+void leer_angulo_servo(int * arg, int *cant_arg){
     *arg = (int)servo.getAngle();
+    *cant_arg = 1;
 }
 
 // Rutina de atencion para comando: RX_MOV_SERVO
-void mov_servo(int * arg){
+void mov_servo(int * arg, int *cant_arg){
     servo.setAngle((int) *arg);
+    *cant_arg = 1;
 }
 
 // Rutina de atencion para comando: RX_RECORRIDO_SERVO
-void recorrido_servo_estado(int * arg){
+void recorrido_servo_estado(int * arg, int *cant_arg){
     servo.SetSweep((bool) *arg);
+    *cant_arg = 1;
 }
 
 // Rutina de atencion para comando: RX_MS_SENSOR_ULTRA_SONIDO_REGULAR
-void sensor_ultra_sonido_regular(int * arg){
+void sensor_ultra_sonido_regular(int * arg, int *cant_arg){
 
     if(*arg <= 0){
         us.SetRegularTransmition((bool) false);
@@ -46,7 +50,7 @@ void sensor_ultra_sonido_regular(int * arg){
 
 
 // Rutina de atencion para comando: RX_MS_SENSOR_OPTICO_REGULAR
-void sensor_optico_regular(int * arg){
+void sensor_optico_regular(int * arg, int *cant_arg){
     if(*arg <= 0){
         opt.SetRegularTransmition((bool) false);
         opt.SetRegularTransmitionCMD( nullptr );
@@ -60,23 +64,47 @@ void sensor_optico_regular(int * arg){
 }
 
 // Rutina de atencion para comando: TX_ULTRA_SONIDO
-void leer_sensor_ultrasonido(int * arg){
+void leer_sensor_ultrasonido(int * arg, int *cant_arg){
     *arg = us.getDistance_mm();
+    *cant_arg = 1;
 }
 
 // Rutina de atencion para comando: TX_OPTICO
-void leer_sensor_optico(int * arg){
+void leer_sensor_optico(int * arg, int *cant_arg){
     *arg = opt.getDistance_mm();
+    *cant_arg = 1;
 }
 
 // Rutina de atencion para comando: RX_MS_SENSOR_ULTRA_SONIDO_ONETIME
-void sensor_ultra_sonido_medicion(int * arg){
+void sensor_ultra_sonido_medicion(int * arg, int *cant_arg){
     agente.enviarComando(TX_ULTRA_SONIDO);
 }
 
 // Rutina de atencion para comando: RX_MS_SENSOR_OPTICO_ONETIME
-void sensor_optico_medicion(int * arg){
+void sensor_optico_medicion(int * arg, int *cant_arg){
     agente.enviarComando(TX_OPTICO);
+}
+
+// Rutina de atencion para comando RX_TEST
+
+int argumentos_test[CANTIDAD_ARGUMENTOS_MAX];
+int cantidad_argumentos_test = 0;
+
+void recibir_test(int * arg, int *cant_arg){
+    cantidad_argumentos_test = *cant_arg;
+    for(int i = 0; i < cantidad_argumentos_test; i++){
+        argumentos_test[i] = arg[i];
+    }
+    agente.enviarComando(TX_TEST);
+    
+}   
+
+// Rutina para enviar comando TX_TEST
+void enviar_test(int * arg, int *cant_arg){
+    for(int i = 0; i < cantidad_argumentos_test; i++){
+        arg[i] = 100 + argumentos_test[cantidad_argumentos_test - i - 1];
+    }
+    *cant_arg = cantidad_argumentos_test;
 }
 
 // Funciones de inicializacion
@@ -93,6 +121,9 @@ void asignar_rutinas_atencion(){
     AgenteComandos::asignarFuncion(TX_OPTICO,leer_sensor_optico);
     AgenteComandos::asignarFuncion(TX_ANGULO,leer_angulo_servo);
     AgenteComandos::asignarFuncion(RX_MS_ANGULO,servo_estado);
+    AgenteComandos::asignarFuncion(TX_TEST,enviar_test);
+    AgenteComandos::asignarFuncion(RX_TEST,recibir_test);
+
     //AgenteComandos::asignarFuncion(RX_MS_SENSOR_ACELEROMETRO,);
     //AgenteComandos::asignarFuncion(RX_MS_SENSOR_GIROSCOPO,);
     // AgenteComandos::asignarFuncion(TX_ACELEROMETRO_X,);

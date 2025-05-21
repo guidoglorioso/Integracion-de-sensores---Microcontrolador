@@ -10,7 +10,7 @@ private:
 
     void _regularTxCheck(); // Metodo que chequea si se debe enviar el dato en forma periodica
 
-    void (*_ptrRegularTransmision)(int*); // Funcion a la que se invoca cuando el driver se actualizo _cant_update_regular_tx veces Y se debe enviar el dato.
+    void (*_ptrRegularTransmision)(int*,int*); // Funcion a la que se invoca cuando el driver se actualizo _cant_update_regular_tx veces Y se debe enviar el dato.
     bool _regular_tx;                      // Flag para activar o desactivar la actualizacion en forma regular
     int _cant_update_regular_tx;           // Variable que indica cuantas actualizaciones se deben realizar para enviar el dato.
 
@@ -28,7 +28,7 @@ public:
   inline void SetRegularTransmition(bool state){_regular_tx = state;};
 
   //Metodo para setear la funcion de envio de datos automatica.
-  inline void SetRegularTransmitionCMD(void (*funcion)(int*)){_ptrRegularTransmision = funcion; };
+  inline void SetRegularTransmitionCMD(void (*funcion)(int*,int*)){_ptrRegularTransmision = funcion; };
   
   //Metodo para setear la cantidad de actualizaciones antes de enviar el dato medido.
   inline void SetCantUpdateRegularTx(int cant){_cant_update_regular_tx = cant;};

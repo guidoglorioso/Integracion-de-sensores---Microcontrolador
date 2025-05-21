@@ -26,6 +26,7 @@ enum Comando{
     RX_MS_SENSOR_ACELEROMETRO,              // Permite activar/desactivar mediciones constantemente del sensor acelerometro
     RX_MS_SENSOR_GIROSCOPO,                 // Permite activar/desactivar mediciones constantemente del sensor giroscopo
     RX_MS_ANGULO,                           // Permite pedir la ultima medicion
+    RX_TEST,                                // (ok)Comando de test para recibir argumentos
 
     //Comandos para enviar
     TX_ACELEROMETRO_X,      // Enviar aceleracion eje X.
@@ -36,14 +37,15 @@ enum Comando{
     TX_GIROSCOPO_X,         // Enviar aceleracion angular eje X.
     TX_GIROSCOPO_Y,         // Enviar aceleracion angular eje Y.
     TX_GIROSCOPO_Z,         // Enviar aceleracion angular eje Z.
-    TX_ANGULO          // Enviar angulo servo.
+    TX_ANGULO,          // Enviar angulo servo.
+    TX_TEST           // Enviar test
 };
 
 //Estructura de cada comando
 struct Comandos_t {
     const Comando cmd;      // Nombre del comando
     const char* trama;      // Trama asociada que se recibe
-    void (*funcion)(int*);  // Funcion que se invoca al enviar o recibir el comando
+    void (*funcion)(int*,int*);  // Funcion que se invoca al enviar o recibir el comando - Primer puntero es el vector de argumento, segundo puntero es la cantidad de argumentos
 };
 
 /*
@@ -58,7 +60,8 @@ struct Comandos_t {
     {RX_MS_SENSOR_OPTICO_REGULAR, "SENOP", nullptr}, \
     {RX_MS_SENSOR_ACELEROMETRO, "SENAC", nullptr}, \
     {RX_MS_SENSOR_GIROSCOPO, "SENGI", nullptr}, \
-    {RX_MS_ANGULO, "ANG", nullptr} \
+    {RX_MS_ANGULO, "ANG", nullptr}, \
+    {RX_TEST, "TST", nullptr} \
 }
 
 #define DEFINE_COMANDO_TX { \
@@ -70,7 +73,8 @@ struct Comandos_t {
     {TX_GIROSCOPO_X, "SENGIX", nullptr}, \
     {TX_GIROSCOPO_Y, "SENGIY", nullptr}, \
     {TX_GIROSCOPO_Z, "SENGIZ", nullptr}, \
-    {TX_ANGULO, "SENANG", nullptr} \
+    {TX_ANGULO, "SENANG", nullptr}, \
+    {TX_TEST, "SENTST", nullptr} \
 }
 
 #endif // COMANDOS_DEFINES_H
